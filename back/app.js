@@ -4,8 +4,7 @@ import cors from "cors";
 
 import remedioRouter from "./routes/remedio.js";
 
-const MONGODB_URI =
-  "mongodb+srv://gustavo:mT54I90oiy1RmHWL@cluster0.3kejlhd.mongodb.net/farmacia?appName=Cluster0";
+const MONGODB_URI = "URL";
 
 const app = express();
 
