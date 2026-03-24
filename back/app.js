@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 
 import remedioRouter from "./routes/remedio.js";
+import authRouter from "./routes/auth.js";
 
 const MONGODB_URI = "URL";
 
@@ -29,6 +30,7 @@ app.use((req, res, next) => {
 });
 
 app.use(remedioRouter);
+app.use(authRouter);
 
 try {
   const result = await mongoose.connect(MONGODB_URI);

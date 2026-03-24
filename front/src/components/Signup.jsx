@@ -1,8 +1,9 @@
 import { useState } from "react";
-import "./Login.css";
+import "./Login.css"; // Reuse login styles if they exist or I'll create them
 
-export default function Login({ onLogin }) {
+export default function Signup() {
   const [formData, setFormData] = useState({
+    nome: "",
     email: "",
     password: "",
   });
@@ -17,24 +18,36 @@ export default function Login({ onLogin }) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("Tentativa de Login (Dados):", JSON.stringify(formData));
-    fetch("http://localhost:8080");
-    // Aqui você chamaria sua API real. Por enquanto simulamos sucesso.
-    // fetch("http://seu-backend/login", { ... })
-
-    alert("Login realizado com sucesso! (Simulado)");
-    onLogin(); // Chama a função passada pelo App.jsx para trocar o estado de login
+    fetch("http://localhost:8080/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+    alert("Cadastro realizado (simulado)!");
   };
 
   return (
     <div className="login-container">
       <div className="login-card">
-        <h2 className="login-title">Bem-vindo</h2>
-        <p className="login-subtitle">
-          Entre na sua conta para ver o calendário
-        </p>
+        <h2 className="login-title">Criar Conta</h2>
+        <p className="login-subtitle">Preencha os dados abaixo</p>
 
         <form onSubmit={handleSubmit} className="login-form">
+          <div className="login-input-group">
+            <label className="login-label">Nome Completo</label>
+            <input
+              type="text"
+              name="nome"
+              placeholder="Seu nome"
+              value={formData.nome}
+              onChange={handleChange}
+              required
+              className="login-input"
+            />
+          </div>
+
           <div className="login-input-group">
             <label className="login-label">E-mail</label>
             <input
@@ -62,7 +75,7 @@ export default function Login({ onLogin }) {
           </div>
 
           <button type="submit" className="login-button">
-            Entrar
+            Cadastrar
           </button>
         </form>
       </div>
