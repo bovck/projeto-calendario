@@ -18,9 +18,16 @@ export default function Login({ onLogin }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
     console.log("Tentativa de Login (Dados):", JSON.stringify(formData));
-    fetch("http://localhost:8080");
-    // Aqui você chamaria sua API real. Por enquanto simulamos sucesso.
-    // fetch("http://seu-backend/login", { ... })
+    const res = await fetch("http://localhost:8080/login", {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+
+    const data = await res.json();
+    console.log(data.message, data.isAuth);
 
     alert("Login realizado com sucesso! (Simulado)");
     onLogin(); // Chama a função passada pelo App.jsx para trocar o estado de login

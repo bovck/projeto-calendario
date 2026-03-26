@@ -25,7 +25,6 @@ export default function Signup() {
       },
       body: JSON.stringify(formData),
     });
-    alert("Cadastro realizado (simulado)!");
   };
 
   return (

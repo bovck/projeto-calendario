@@ -5,7 +5,8 @@ import cors from "cors";
 import remedioRouter from "./routes/remedio.js";
 import authRouter from "./routes/auth.js";
 
-const MONGODB_URI = "URL";
+const MONGODB_URI =
+  "mongodb+srv://gustavo:mT54I90oiy1RmHWL@cluster0.3kejlhd.mongodb.net/farmacia?appName=Cluster0";
 
 const app = express();
 
@@ -31,6 +32,13 @@ app.use((req, res, next) => {
 
 app.use(remedioRouter);
 app.use(authRouter);
+
+app.use((error, req, res, next) => {
+  const status = error.statusCode || 500;
+  const message = error.message;
+  const errorData = error.data;
+  res.status(status).json({ message: message, errorData: errorData });
+});
 
 try {
   const result = await mongoose.connect(MONGODB_URI);
