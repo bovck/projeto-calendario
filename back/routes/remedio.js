@@ -1,4 +1,6 @@
 import express from "express";
+import isAuth from "../middleware/is-auth.js";
+
 import {
   postRemedio,
   getRemedios,
@@ -7,10 +9,10 @@ import {
 
 const remedioRouter = express.Router();
 
-remedioRouter.get("/index", getRemedios);
+remedioRouter.get("/index", isAuth, getRemedios);
 
-remedioRouter.post("/index", postRemedio);
+remedioRouter.post("/index", isAuth, postRemedio);
 
-remedioRouter.put("/index/:remedioId", updateRemedio);
+remedioRouter.put("/index/:remedioId", isAuth, updateRemedio);
 
 export default remedioRouter;

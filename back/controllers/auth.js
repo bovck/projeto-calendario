@@ -1,5 +1,6 @@
 import User from "../models/user.js";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 export const postSignup = async (req, res, next) => {
   const name = req.body.nome;
   const password = req.body.password;
@@ -24,7 +25,7 @@ export const postSignup = async (req, res, next) => {
   }
 };
 
-export const loginSignup = async (req, res, next) => {
+export const postLogin = async (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
   try {
@@ -40,9 +41,19 @@ export const loginSignup = async (req, res, next) => {
       error.statusCode = 404;
       throw error;
     }
-    res
-      .status(200)
-      .json({ message: "Usuario logado com sucesso", isAuth: true });
+    const token = jwt.sign(
+      {
+        email: user.email,
+        userId: user._id.toString(),
+      },
+      "secret",
+      { expiresIn: "1h" },
+    );
+
+    res.status(200).json({
+      message: "Usuario logado com sucesso",
+      token: token,
+    });
   } catch (error) {
     next(error);
   }

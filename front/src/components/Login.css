@@ -28,7 +28,7 @@
 }
 
 .login-input-group {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .login-label {
@@ -60,4 +60,9 @@
 
 .login-button:hover {
   background-color: #0056b3;
+}
+
+.error {
+  color: red;
+  padding-bottom: 5px;
 }

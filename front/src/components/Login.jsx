@@ -1,11 +1,13 @@
 import { useState } from "react";
 import "./Login.css";
 
-export default function Login({ onLogin }) {
+export default function Login({ onToken }) {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+
+  const [errorData, setErrorData] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -27,10 +29,12 @@ export default function Login({ onLogin }) {
     });
 
     const data = await res.json();
-    console.log(data.message, data.isAuth);
+    if (res.status === 404) {
+      setErrorData(data.message);
+    }
+    console.log(data);
 
-    alert("Login realizado com sucesso! (Simulado)");
-    onLogin(); // Chama a função passada pelo App.jsx para trocar o estado de login
+    onToken(data.token);
   };
 
   return (
@@ -67,6 +71,7 @@ export default function Login({ onLogin }) {
               className="login-input"
             />
           </div>
+          {errorData && <div className="error">{errorData}</div>}
 
           <button type="submit" className="login-button">
             Entrar

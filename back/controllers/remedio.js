@@ -1,4 +1,5 @@
 import Remedio from "../models/remedio.js";
+import User from "../models/user.js";
 
 export async function getRemedios(req, res, next) {
   try {
@@ -8,7 +9,7 @@ export async function getRemedios(req, res, next) {
       remedios: remedios,
     });
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 }
 
@@ -20,29 +21,46 @@ export async function postRemedio(req, res, next) {
     date: date,
     name: name,
     time: time,
+    creator: req.userId,
   });
 
   try {
-    const result = await remedio.save();
+    await remedio.save();
+    const user = await User.findById(req.userId);
+    user.remedios.push(remedio);
+    await user.save();
+
     res.status(201).json({
       message: "Produto criado",
+      remedio: remedio,
+      creator: { _id: user._id, name: user.name },
     });
   } catch (err) {
-    console.log(err);
+    next(err);
   }
 }
 
 export async function updateRemedio(req, res, next) {
-  const remedioId = req.params.remedioId;
-  const remedio = await Remedio.findById(remedioId);
+  try {
+    const remedioId = req.params.remedioId;
+    const remedio = await Remedio.findById(remedioId);
 
-  const time = req.body.time;
-  const date = req.body.date;
-  const name = req.body.name;
+    if (remedio.creator.toString() !== req.userId) {
+      const error = new Error("Not authorized!");
+      error.statusCode = 401;
+      throw error;
+    }
 
-  remedio.time = time;
-  remedio.date = date;
-  remedio.name = name;
-  const data = await remedio.save();
-  res.status(201).json(data);
+    const time = req.body.time;
+    const date = req.body.date;
+    const name = req.body.name;
+
+    remedio.time = time;
+    remedio.date = date;
+    remedio.name = name;
+    const data = await remedio.save();
+    res.status(201).json(data);
+  } catch (err) {
+    next(err);
+  }
 }

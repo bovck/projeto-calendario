@@ -15,6 +15,12 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
+  remedios: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Remedio",
+    },
+  ],
 });
 
 const User = mongoose.model("User", userSchema);

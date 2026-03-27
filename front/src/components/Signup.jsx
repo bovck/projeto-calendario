@@ -8,6 +8,8 @@ export default function Signup() {
     password: "",
   });
 
+  const [errorData, setErrorData] = useState("");
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -18,13 +20,26 @@ export default function Signup() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    fetch("http://localhost:8080/signup", {
+    const res = await fetch("http://localhost:8080/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(formData),
     });
+
+    const data = await res.json();
+
+    if (res.status === 200) {
+      setFormData({
+        nome: "",
+        email: "",
+        password: "",
+      });
+    }
+    if (res.status === 500) {
+      setErrorData(data.message);
+    }
   };
 
   return (
@@ -72,6 +87,7 @@ export default function Signup() {
               className="login-input"
             />
           </div>
+          {errorData && <div className="error">{errorData}</div>}
 
           <button type="submit" className="login-button">
             Cadastrar

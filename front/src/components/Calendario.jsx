@@ -3,7 +3,7 @@ import "./Calendario.css";
 
 const API_URL = "http://localhost:8080/index";
 
-export default function Calendario() {
+export default function Calendario({ token }) {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(null);
   const [medications, setMedications] = useState({}); // { 'YYYY-MM-DD': { name, time } }
@@ -12,9 +12,14 @@ export default function Calendario() {
 
   // Carregar dados ao iniciar
   useEffect(() => {
-    fetch(API_URL)
+    fetch(API_URL, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    })
       .then((res) => res.json())
       .then((data) => {
+        console.log(data);
         if (Array.isArray(data.remedios)) {
           const formatted = data.remedios.reduce((acc, item) => {
             const formattedDate = item.date.split("T")[0];
@@ -31,7 +36,7 @@ export default function Calendario() {
         }
       })
       .catch((err) => console.error("Erro ao carregar dados:", err));
-  }, []);
+  }, [token]);
 
   const daysInMonth = (year, month) => new Date(year, month + 1, 0).getDate();
   const firstDayOfMonth = (year, month) => new Date(year, month, 1).getDay();
@@ -82,7 +87,10 @@ export default function Calendario() {
 
     fetch(API_URL, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
       body: JSON.stringify(medicationData),
     })
       .then((res) => res.json())
@@ -101,6 +109,7 @@ export default function Calendario() {
     e.preventDefault();
 
     const existing = medications[selectedDate];
+    console.log(existing);
 
     if (!newMed.name || !newMed.time) return;
 
@@ -112,10 +121,17 @@ export default function Calendario() {
 
     fetch(`http://localhost:8080/index/${existing.id}`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
       body: JSON.stringify(medicationData),
     })
       .then((res) => {
+        if (res.status === 401) {
+          const error = new Error("Unauthorized");
+          throw error;
+        }
         console.log("STATUS:", res.status);
         return res.json();
       })
@@ -140,7 +156,9 @@ export default function Calendario() {
 
     fetch(API_URL, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify(medicationData),
     })
       .then(() => {

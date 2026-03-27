@@ -10,13 +10,14 @@ const MONGODB_URI =
 
 const app = express();
 
-app.use(
-  cors({
-    origin: "http://localhost:5173",
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type"],
-  }),
-);
+// app.use(
+//   cors({
+//     origin: "http://localhost:5173",
+//     methods: ["GET", "POST", "PUT", "DELETE"],
+//     allowedHeaders: ["Content-Type", "Authorization"],
+//   }),
+//   next(),
+// );
 
 app.use(express.json());
 
