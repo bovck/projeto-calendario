@@ -1,11 +1,14 @@
 import express from "express";
 import mongoose from "mongoose";
+
 import cors from "cors";
 
+import MONGODB_URI from "./help.js";
 import remedioRouter from "./routes/remedio.js";
 import authRouter from "./routes/auth.js";
 
-const MONGODB_URI = "URL";
+// const MONGODB_URI =
+//   "mongodb+srv://gustavo:mT54I90oiy1RmHWL@cluster0.3kejlhd.mongodb.net/farmacia?appName=Cluster0";
 
 const app = express();
 
