@@ -1,6 +1,7 @@
 import User from "../models/user.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+
 export const postSignup = async (req, res, next) => {
   const name = req.body.nome;
   const password = req.body.password;
@@ -53,8 +54,15 @@ export const postLogin = async (req, res, next) => {
     res.status(200).json({
       message: "Usuario logado com sucesso",
       token: token,
+      userId: user._id.toString(),
     });
   } catch (error) {
     next(error);
   }
+};
+
+export const getLogin = async (req, res, next) => {
+  const userId = req.params.userId;
+  const user = await User.findById(userId);
+  res.status(200).json({ message: "sucesso" });
 };

@@ -1,6 +1,8 @@
 import { useState } from "react";
 import "./Login.css";
 
+const localToken = localStorage.getItem("token");
+
 export default function Login({ onToken }) {
   const [formData, setFormData] = useState({
     email: "",
@@ -32,9 +34,10 @@ export default function Login({ onToken }) {
     if (res.status === 404) {
       setErrorData(data.message);
     }
-    console.log(data);
+    localStorage.setItem("token", data.token);
+    localStorage.setItem("userId", data.userId);
 
-    onToken(data.token);
+    onToken(data.token || localToken);
   };
 
   return (

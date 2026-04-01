@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -11,14 +11,14 @@ import Calendario from "./components/Calendario.jsx";
 import Login from "./components/Login.jsx";
 import Signup from "./components/Signup.jsx";
 
+const localToken = localStorage.getItem("token");
+
 function App() {
   // Estado que controla se o usuário está logado
   const [token, setToken] = useState();
 
   const handleToken = (token) => setToken(token);
-
   const handleLogout = () => setToken(null);
-
   return (
     <Router>
       <Header isLoggedIn={token} onLogout={handleLogout} />

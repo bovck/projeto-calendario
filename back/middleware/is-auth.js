@@ -8,7 +8,6 @@ export default async (req, res, next) => {
   }
 
   const token = authHeader.split(" ")[1];
-  console.log(token);
   let decodedToken;
 
   try {
