@@ -3,7 +3,7 @@ import "./Calendario.css";
 
 const API_URL = "http://localhost:8080/index";
 
-export default function Calendario({ token }) {
+export default function Calendario({ token, onLogout }) {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(null);
   const [medications, setMedications] = useState({}); // { 'YYYY-MM-DD': { name, time } }
@@ -17,9 +17,13 @@ export default function Calendario({ token }) {
         Authorization: "Bearer " + token,
       },
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (res.status === 401) {
+          throw new Error("Sessão expirada. Faça login novamente.");
+        }
+        return res.json();
+      })
       .then((data) => {
-        console.log(data);
         if (Array.isArray(data.remedios)) {
           const formatted = data.remedios.reduce((acc, item) => {
             const formattedDate = item.date.split("T")[0];
@@ -63,6 +67,8 @@ export default function Calendario({ token }) {
     setCurrentDate(new Date(year, month - 1, 1));
   };
 
+  console.log(medications);
+
   const handleNextMonth = () => {
     setCurrentDate(new Date(year, month + 1, 1));
   };
@@ -93,7 +99,13 @@ export default function Calendario({ token }) {
       },
       body: JSON.stringify(medicationData),
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (res.status === 401) {
+          onLogout();
+          throw new Error("Sessão expirada. Faça login novamente.");
+        }
+        return res.json();
+      })
       .then(() => {
         setMedications((prev) => ({
           ...prev,
@@ -129,8 +141,8 @@ export default function Calendario({ token }) {
     })
       .then((res) => {
         if (res.status === 401) {
-          const error = new Error("Unauthorized");
-          throw error;
+          onLogout();
+          throw new Error("Sessão expirada. Faça login novamente.");
         }
         console.log("STATUS:", res.status);
         return res.json();
@@ -158,9 +170,17 @@ export default function Calendario({ token }) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
       },
       body: JSON.stringify(medicationData),
     })
+      .then((res) => {
+        if (res.status === 401) {
+          onLogout();
+          throw new Error("Sessão expirada. Faça login novamente.");
+        }
+        return res;
+      })
       .then(() => {
         setMedications((prev) => {
           const newState = { ...prev };

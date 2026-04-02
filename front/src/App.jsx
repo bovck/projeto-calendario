@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -11,14 +11,18 @@ import Calendario from "./components/Calendario.jsx";
 import Login from "./components/Login.jsx";
 import Signup from "./components/Signup.jsx";
 
-const localToken = localStorage.getItem("token");
-
 function App() {
   // Estado que controla se o usuário está logado
-  const [token, setToken] = useState();
+  const [token, setToken] = useState(localStorage.getItem("token"));
 
   const handleToken = (token) => setToken(token);
-  const handleLogout = () => setToken(null);
+
+  const handleLogout = () => {
+    setToken(null);
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
+  };
+
   return (
     <Router>
       <Header isLoggedIn={token} onLogout={handleLogout} />
@@ -28,7 +32,7 @@ function App() {
           path="/"
           element={
             token ? (
-              <Calendario token={token} />
+              <Calendario token={token} onLogout={handleLogout} />
             ) : (
               <Login onToken={handleToken} />
             )
