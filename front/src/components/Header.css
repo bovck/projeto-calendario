@@ -1,10 +1,12 @@
 .header {
-  background-color: #ffffff;
-  border-bottom: 1px solid #e5e7eb;
+  background: rgba(238, 241, 244, 0.88);
+  border-bottom: 1px solid var(--color-border);
+  backdrop-filter: blur(14px);
   position: sticky;
   top: 0;
   z-index: 1000;
   width: 100%;
+  box-shadow: 0 10px 30px -24px var(--color-shadow);
 }
 
 .header-container {
@@ -18,7 +20,7 @@
 
 .header-logo {
   text-decoration: none;
-  color: #111827;
+  color: var(--color-text);
 }
 
 .header-logo h1 {
@@ -26,7 +28,7 @@
   font-size: 1.5rem;
   font-weight: 800;
   letter-spacing: -0.025em;
-  background: linear-gradient(to right, #2563eb, #3b82f6);
+  background: linear-gradient(to right, #1f2933, #6b7280);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -48,34 +50,32 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid transparent;
+  border: 1px solid var(--color-border);
   font-family: inherit;
+  color: var(--color-text);
 }
 
-/* Estilo do botão de login (outline) */
 .header-button.login {
-  background-color: transparent;
-  color: #4b5563;
-  border: 1px solid #d1d5db;
+  background-color: rgba(255, 255, 255, 0.32);
+  color: var(--color-text-muted);
 }
 
 .header-button.login:hover {
-  background-color: #f9fafb;
-  border-color: #9ca3af;
-  color: #111827;
+  background-color: var(--color-surface);
+  border-color: var(--color-border-strong);
+  color: var(--color-text);
 }
 
-/* Estilo do botão de cadastro (primary) */
 .header-button.signup {
-  background-color: #2563eb;
-  color: #ffffff;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  background: linear-gradient(135deg, var(--color-accent), #6b7280);
+  color: var(--color-surface-strong);
+  box-shadow: 0 10px 20px -16px rgba(31, 41, 51, 0.8);
 }
 
 .header-button.signup:hover {
-  background-color: #1d4ed8;
+  background: linear-gradient(135deg, var(--color-accent-hover), #4b5563);
   transform: translateY(-1px);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 14px 24px -18px rgba(31, 41, 51, 0.9);
 }
 
 .header-button.signup:active {
@@ -86,7 +86,7 @@
   .header-container {
     padding: 0.75rem 1rem;
   }
-  
+
   .header-logo h1 {
     font-size: 1.25rem;
   }

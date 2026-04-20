@@ -297,7 +297,6 @@ export default function Calendario({ token, onLogout }) {
                     type="button"
                     className="btn-delete"
                     onClick={handleDeleteMedication}
-                    style={{ backgroundColor: "#ff4d4d", color: "white" }}
                   >
                     Excluir
                   </button>

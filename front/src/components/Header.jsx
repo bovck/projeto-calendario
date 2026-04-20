@@ -6,7 +6,7 @@ export default function Header({ isLoggedIn, onLogout }) {
     <header className="header">
       <div className="header-container">
         <Link to="/" className="header-logo">
-          <h1>Meu App</h1>
+          <h1>Calendário</h1>
         </Link>
         <nav className="header-nav">
           {!isLoggedIn ? (
