@@ -273,6 +273,7 @@ export default function Calendario({ token, onLogout }) {
             >
               <input
                 type="text"
+                maxlength="13"
                 placeholder="Nome do remédio"
                 value={newMed.name}
                 onChange={(e) => setNewMed({ ...newMed, name: e.target.value })}

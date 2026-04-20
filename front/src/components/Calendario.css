@@ -1,5 +1,5 @@
 .calendar-container {
-  max-width: 440px;
+  max-width: 520px;
   margin: 2rem auto;
   border: 1px solid rgba(255, 255, 255, 0.45);
   border-radius: 22px;
@@ -49,6 +49,7 @@
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 0.45rem;
+  align-items: start;
 }
 
 .calendar-day-header {
@@ -63,13 +64,16 @@
 
 .calendar-day {
   border: 1px solid rgba(178, 186, 196, 0.7);
-  min-height: 64px;
+  width: 100%;
+  aspect-ratio: 1 / 1.08;
   padding: 0.5rem;
   cursor: pointer;
   background-color: rgba(255, 255, 255, 0.6);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  align-self: start;
+  overflow: hidden;
   border-radius: 14px;
   transition:
     transform 0.2s ease,
@@ -125,6 +129,7 @@
   margin-top: 0.3rem;
   line-height: 1.35;
   word-break: break-word;
+  overflow: hidden;
 }
 
 .modal-overlay {
@@ -229,6 +234,6 @@
   }
 
   .calendar-day {
-    min-height: 58px;
+    aspect-ratio: 1 / 1.08;
   }
 }
