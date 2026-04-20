@@ -16,7 +16,7 @@ export default async (req, res, next) => {
     error.statusCode = 500;
   }
 
-  console.log(decodedToken);
+  // console.log(decodedToken);
 
   if (!decodedToken) {
     const error = new Error("not authenticated");

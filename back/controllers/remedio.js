@@ -64,3 +64,33 @@ export async function updateRemedio(req, res, next) {
     next(err);
   }
 }
+
+export async function deleteRemedio(req, res, next) {
+  const remedioId = req.params.remedioId;
+  try {
+    const remedio = await Remedio.findByIdAndDelete(remedioId);
+
+    if (!remedio) {
+      const error = new Error("Remédio não foi achado");
+      error.statusCode = 404;
+      throw error;
+    }
+
+    if (remedio.creator.toString() !== req.userId.toString()) {
+      const error = new Error("Não autorizado");
+      error.statusCode = 422;
+      throw error;
+    }
+
+    await Remedio.findByIdAndDelete(remedioId);
+    const user = await User.findById(req.userId);
+    user.remedios.pull(remedioId);
+    await user.save();
+    res.status(201).json({ message: "excluído com sucesso" });
+  } catch (err) {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  }
+}

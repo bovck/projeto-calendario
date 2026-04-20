@@ -31,7 +31,7 @@ export const postLogin = async (req, res, next) => {
   const password = req.body.password;
   try {
     const user = await User.findOne({ email: email });
-    console.log(user);
+    // console.log(user);
     if (!user) {
       console.log("ta chegando aqui");
       const error = new Error("Usuario invalido -> email");

@@ -45,6 +45,8 @@ export default function Calendario({ token, onLogout }) {
   const daysInMonth = (year, month) => new Date(year, month + 1, 0).getDate();
   const firstDayOfMonth = (year, month) => new Date(year, month, 1).getDay();
 
+  // console.log(medications, "oi to aqui");
+
   const month = currentDate.getMonth();
   const year = currentDate.getFullYear();
 
@@ -67,7 +69,7 @@ export default function Calendario({ token, onLogout }) {
     setCurrentDate(new Date(year, month - 1, 1));
   };
 
-  console.log(medications);
+  // console.log(medications);
 
   const handleNextMonth = () => {
     setCurrentDate(new Date(year, month + 1, 1));
@@ -106,10 +108,10 @@ export default function Calendario({ token, onLogout }) {
         }
         return res.json();
       })
-      .then(() => {
+      .then((result) => {
         setMedications((prev) => ({
           ...prev,
-          [selectedDate]: { ...newMed },
+          [selectedDate]: { ...newMed, id: result.remedio._id },
         }));
         setNewMed({ name: "", time: "" });
         setIsModalOpen(false);
@@ -121,7 +123,7 @@ export default function Calendario({ token, onLogout }) {
     e.preventDefault();
 
     const existing = medications[selectedDate];
-    console.log(existing);
+    // console.log(existing);
 
     if (!newMed.name || !newMed.time) return;
 
@@ -160,19 +162,14 @@ export default function Calendario({ token, onLogout }) {
   };
 
   const handleDeleteMedication = () => {
-    const medicationData = {
-      date: selectedDate,
-      name: "",
-      time: "",
-    };
+    const existing = medications[selectedDate];
 
-    fetch(API_URL, {
-      method: "POST",
+    fetch(`${API_URL}/${existing.id}`, {
+      method: "DELETE",
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
       },
-      body: JSON.stringify(medicationData),
     })
       .then((res) => {
         if (res.status === 401) {
@@ -273,7 +270,7 @@ export default function Calendario({ token, onLogout }) {
             >
               <input
                 type="text"
-                maxlength="13"
+                maxLength="13"
                 placeholder="Nome do remédio"
                 value={newMed.name}
                 onChange={(e) => setNewMed({ ...newMed, name: e.target.value })}
