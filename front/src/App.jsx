@@ -13,26 +13,24 @@ import Signup from "./components/Signup.jsx";
 
 function App() {
   // Estado que controla se o usuário está logado
-  const [token, setToken] = useState(localStorage.getItem("token"));
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [token, setToken] = useState();
 
   const handleToken = (token) => setToken(token);
 
-  const handleLogout = () => {
-    setToken(null);
-    localStorage.removeItem("token");
-    localStorage.removeItem("userId");
-  };
+  // const handleLogin = () => setIsLoggedIn(true);
+  const handleLogout = () => setIsLoggedIn(false);
 
   return (
     <Router>
-      <Header isLoggedIn={token} onLogout={handleLogout} />
+      <Header isLoggedIn={isLoggedIn} onLogout={handleLogout} />
       <Routes>
         {/* Se estiver logado, mostra Calendário. Se não, mostra Login */}
         <Route
           path="/"
           element={
             token ? (
-              <Calendario token={token} onLogout={handleLogout} />
+              <Calendario token={token} />
             ) : (
               <Login onToken={handleToken} />
             )

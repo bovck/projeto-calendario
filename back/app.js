@@ -1,5 +1,6 @@
 import express from "express";
 import mongoose from "mongoose";
+import "dotenv/config";
 
 import MONGODB_URI from "./help.js";
 import remedioRouter from "./routes/remedio.js";
@@ -30,7 +31,7 @@ app.use((error, req, res, next) => {
 });
 
 try {
-  const result = await mongoose.connect(MONGODB_URI);
+  const result = await mongoose.connect(process.env.MONGO_URI);
   if (result) {
     app.listen(8080);
   }
