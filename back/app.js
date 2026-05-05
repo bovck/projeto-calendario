@@ -2,7 +2,6 @@ import express from "express";
 import mongoose from "mongoose";
 import "dotenv/config";
 
-import MONGODB_URI from "./help.js";
 import remedioRouter from "./routes/remedio.js";
 import authRouter from "./routes/auth.js";
 
